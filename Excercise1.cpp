@@ -206,6 +206,8 @@ int main()
 	{
 		delete btr[i];
 		btr[i] = NULL;
+		delete btr2[i];
+		btr2[i] = NULL;
 	}
 	return 0;
 
