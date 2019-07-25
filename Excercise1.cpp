@@ -6,7 +6,7 @@ using namespace std;
 class Book
 {
 private:
-	char *bookName;
+	char* bookName;
 	int stock;
 	float price;
 public:
@@ -14,19 +14,19 @@ public:
 	{
 
 	}
-	Book(char *name, int st,float pri) : bookName(new char[strlen(name) + 1]), stock(st), price(pri)
+	Book(char* name, int st, float pri) : bookName(new char[strlen(name) + 1]), stock(st), price(pri)
 	{
 		strcpy(bookName, name);
 	}
 
-/*	void SetBookDetails(char *name,int st, float pri)
+	/*	void SetBookDetails(char *name,int st, float pri)
 
-	{
-		strcpy(bookName, name);
-		stock = st;
-		price = pri;
-	}
-*/
+		{
+			strcpy(bookName, name);
+			stock = st;
+			price = pri;
+		}
+	*/
 	void DisplayBookDetails()
 	{
 		cout << "Book details" << endl;
@@ -35,9 +35,9 @@ public:
 		cout << "stock : " << stock << endl;
 		cout << "price : " << price << endl;
 	}
-	int SearchForBook(char *book)
+	int SearchForBook(char* book)
 	{
-		if (strcmp(book,bookName) == 0 )
+		if (strcmp(book, bookName) == 0)
 			return 1;
 		return 0;
 	}
@@ -68,13 +68,13 @@ int main()
 	int choice;
 	int userPurchaseChoice;
 	char name[50];
-	int flag,limit=0;
+	int flag, limit = 0;
 	flag = 0;
-	int newStock,quantity;
+	int newStock, quantity;
 	int bookCount = 0;
 	float price;
-	
-	Book *btr[3];
+
+	Book* btr[3];
 	char repeat;
 	for (int i = 0; i < 3; i++)
 		btr[i] = NULL;
@@ -102,26 +102,25 @@ int main()
 						break;
 					}
 				}
-
+			}
+			if (flag == 0)
+			{
+				if (bookCount <= 2)
+				{
+					cout << "New book please provide stock and price " << endl;
+					cin >> newStock >> price;
+					btr[bookCount++] = new Book(name, newStock, price);
+					flag = 1;
+					break;
+				}
 				else
 				{
-
-					if (bookCount <= 2)
-					{
-						cout << "New book please provide stock and price " << endl;
-						cin >> newStock >> price;
-						btr[bookCount++] = new Book(name, newStock, price);
-						break;
-					}
-					else
-					{
-						cout << "limit was reached" << endl;
-						break;
-					}
+					cout << "Limit is reached" << endl;
+					break;
 				}
 			}
-				
-			
+
+
 			break;
 		case 2:
 			if (bookCount == 0)
@@ -131,12 +130,12 @@ int main()
 			}
 			for (int i = 0; i < bookCount; i++)
 			{
-			
-					btr[i]->DisplayBookDetails();
-			
-			
+
+				btr[i]->DisplayBookDetails();
+
+
 			}
-				break;
+			break;
 		case 3: cout << "Enter book name " << endl;
 			cin >> name;
 			flag = 0;
@@ -157,13 +156,14 @@ int main()
 							cin >> quantity;
 							if (quantity <= btr[i]->getStock())
 							{
+								cout << "Total purchase amount " << btr[i]->getPrice() * quantity << endl;
 								cout << "You can purchase now do you want ? 1/0" << endl;
+								
 								cin >> userPurchaseChoice;
 								if (userPurchaseChoice == 1)
 								{
+									cout << "purchase successfull" << endl;
 									btr[i]->updatePurchase(quantity);
-
-									cout << "Total purchase amount " << btr[i]->getPrice()*quantity << endl;
 
 									if (btr[i]->getStock() == 0)
 									{
@@ -183,7 +183,7 @@ int main()
 							}
 
 						}
-						
+
 					}
 				}
 				if (flag == 0)
@@ -206,8 +206,7 @@ int main()
 	{
 		delete btr[i];
 		btr[i] = NULL;
-		delete btr2[i];
-		btr2[i] = NULL;
+		
 	}
 	return 0;
 
