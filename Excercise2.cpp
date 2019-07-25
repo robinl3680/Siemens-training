@@ -12,10 +12,7 @@ class BookStore
 		int stock;
 		float price;
 	public:
-		Book()
-		{
-
-		}
+	
 		Book(char *name, int st, float pri) : bookName(new char[strlen(name) + 1]), stock(st), price(pri)
 		{
 			strcpy(bookName, name);
@@ -48,12 +45,14 @@ class BookStore
 	};
 
 	Book *book[3];
-	int bookCount = 0;
+	int bookCount;
 	char *name;
 
 public:
+
 	BookStore(char *storename) : name(new char[strlen(storename)+1])
 	{
+		bookCount = 0;
 		strcpy(name, storename);
 		for (int i = 0; i < 3; i++)
 			book[i] = NULL;
@@ -68,8 +67,7 @@ public:
 		{
 			if (book[i] != NULL)
 			{
-
-				if (strcmp(book[i]->GetBookName(),name)==0)
+				if (strcmp(book[i]->GetBookName(), name) == 0)
 				{
 					int newStock;
 					cout << "Book already exists update the count " << endl;
@@ -77,24 +75,31 @@ public:
 					flag = 1;
 					book[i]->UpdateStock(newStock);
 					break;
-				
 				}
-			}
-		}
-		if (flag != 1)
-		{
-
-			if (bookCount <= 2)
-			{
-				cout << "New book please provide stock and price" << endl;
-				cin >> stock >> price;
-				book[bookCount++] = new Book(name, stock, price);
-				cout << "Book added" << endl;
 				
 			}
 			else
-				cout << "Limit is reached" << endl;
+			{
+				
+
+				if (bookCount <= 2)
+				{
+					cout << "New book please provide stock and price" << endl;
+					cin >> stock >> price;
+					book[bookCount++] = new Book(name, stock, price);
+					cout << "Book added" << endl;
+					break;
+
+				}
+				else
+				{
+					cout << "Limit is reached" << endl;
+					break;
+				}
+			}
+
 		}
+		
 		
 	}
 	void DisplayBook()
@@ -105,31 +110,24 @@ public:
 			cout << "No books are added" << endl;
 			return;
 		}
-		for (int i = 0; i < 3; i++)
-		{
-			if (book[i] != NULL)
-				flag = 1;
-		}
-		if (flag == 1)
+		
+		else
 		{
 			cout << "Book Details" << endl;
 			cout << "--------------" << endl;
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < bookCount; i++)
 			{
-				if (book[i] != NULL)
-				{
+				
 					cout << "Book name : " << book[i]->GetBookName() << endl;
 					cout << "Book stock : " << book[i]->GetStock() << endl;
 					cout << "Book price : " << book[i]->GetPrice() << endl;
-				}
 			}
 		}
-		else
-			cout << "No book added" << endl;
+
 	}
 	int searchSingle(char *name)
 	{
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < bookCount; i++)
 		{
 			if (strcmp(book[i]->GetBookName(), name) == 0)
 				return 1;
@@ -138,6 +136,7 @@ public:
 	}
 	void SearchBook(char *name)
 	{
+		int choice;
 		int flag = 0;
 		int quantity;
 		if (bookCount == 0)
@@ -146,10 +145,9 @@ public:
 		}
 		else
 		{
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < bookCount; i++)
 			{
-				if (book[i] != NULL)
-				{
+			
 					if (strcmp(book[i]->GetBookName(), name) == 0)
 					{
 						flag = 1;
@@ -157,23 +155,31 @@ public:
 						cin >> quantity;
 						if (quantity <= book[i]->GetStock())
 						{
-							cout << "You can purchase now" << endl;
-							book[i]->UpdatePurchase(quantity);
-
-							cout << "Total purchase amount " << book[i]->GetPrice()*quantity << endl;
-
-							if (book[i]->GetStock() == 0)
+							cout << "You can purchase now do you want to purchase ? 1/0 " << endl;
+							cin >> choice;
+							if (choice == 1)
 							{
-								delete book[i];
-								book[i] = NULL;
-								bookCount--;
+								book[i]->UpdatePurchase(quantity);
+								cout << "Total purchase amount " << book[i]->GetPrice()*quantity << endl;
+
+								if (book[i]->GetStock() == 0)
+								{
+									book[i] = book[bookCount - 1];
+									//delete book[bookCount - 1];
+									book[bookCount - 1] = NULL;
+									bookCount--;
+								}
 							}
+							else
+								break;
+
+							
 						}
 						else
+						{
 							cout << "Not that much stock is available" << endl;
-
-					}
-
+							break;
+						}
 				}
 			}
 			if (flag == 0)
@@ -186,10 +192,11 @@ public:
 
 	~BookStore()
 	{
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < bookCount; i++)
 		{
-			delete book[i];
-			book[i] = NULL;
+			
+				delete book[i];
+				book[i] = NULL;
 		}
 		delete[] name;
 
