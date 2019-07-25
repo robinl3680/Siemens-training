@@ -407,6 +407,5 @@ int main()
 		btr[i] = NULL;
 	}
 	return 0;
-	return 0;
 
 }
