@@ -8,12 +8,12 @@ class BookStore
 	class Book
 	{
 	private:
-		char *bookName;
+		char* bookName;
 		int stock;
 		float price;
 	public:
-	
-		Book(char *name, int st, float pri) : bookName(new char[strlen(name) + 1]), stock(st), price(pri)
+
+		Book(char* name, int st, float pri) : bookName(new char[strlen(name) + 1]), stock(st), price(pri)
 		{
 			strcpy(bookName, name);
 		}
@@ -44,22 +44,22 @@ class BookStore
 		}
 	};
 
-	Book *book[3];
+	Book* book[3];
 	int bookCount;
-	char *name;
+	char* name;
 
 public:
 
-	BookStore(char *storename) : name(new char[strlen(storename)+1])
+	BookStore(char* storename) : name(new char[strlen(storename) + 1])
 	{
 		bookCount = 0;
 		strcpy(name, storename);
 		for (int i = 0; i < 3; i++)
 			book[i] = NULL;
 	}
-	void AddBook(char *name)
+	void AddBook(char* name)
 	{
-		
+
 		int flag = 0;
 		int stock;
 		float price;
@@ -76,11 +76,11 @@ public:
 					book[i]->UpdateStock(newStock);
 					break;
 				}
-				
+
 			}
 			else
 			{
-				
+
 
 				if (bookCount <= 2)
 				{
@@ -99,8 +99,8 @@ public:
 			}
 
 		}
-		
-		
+
+
 	}
 	void DisplayBook()
 	{
@@ -110,22 +110,22 @@ public:
 			cout << "No books are added" << endl;
 			return;
 		}
-		
+
 		else
 		{
 			cout << "Book Details" << endl;
 			cout << "--------------" << endl;
 			for (int i = 0; i < bookCount; i++)
 			{
-				
-					cout << "Book name : " << book[i]->GetBookName() << endl;
-					cout << "Book stock : " << book[i]->GetStock() << endl;
-					cout << "Book price : " << book[i]->GetPrice() << endl;
+
+				cout << "Book name : " << book[i]->GetBookName() << endl;
+				cout << "Book stock : " << book[i]->GetStock() << endl;
+				cout << "Book price : " << book[i]->GetPrice() << endl;
 			}
 		}
 
 	}
-	int searchSingle(char *name)
+	int searchSingle(char* name)
 	{
 		for (int i = 0; i < bookCount; i++)
 		{
@@ -134,7 +134,7 @@ public:
 		}
 		return 0;
 	}
-	void SearchBook(char *name)
+	void SearchBook(char* name)
 	{
 		int choice;
 		int flag = 0;
@@ -147,39 +147,40 @@ public:
 		{
 			for (int i = 0; i < bookCount; i++)
 			{
-			
-					if (strcmp(book[i]->GetBookName(), name) == 0)
+
+				if (strcmp(book[i]->GetBookName(), name) == 0)
+				{
+					flag = 1;
+					cout << " Book exist please enter required quantity" << endl;
+					cin >> quantity;
+					if (quantity <= book[i]->GetStock())
 					{
-						flag = 1;
-						cout << " Book exist please enter required quantity" << endl;
-						cin >> quantity;
-						if (quantity <= book[i]->GetStock())
+						cout << "Total purchase amount " << book[i]->GetPrice() * quantity << endl;
+						cout << "You can purchase now do you want to purchase ? 1/0 " << endl;
+						cin >> choice;
+						if (choice == 1)
 						{
-							cout << "You can purchase now do you want to purchase ? 1/0 " << endl;
-							cin >> choice;
-							if (choice == 1)
+							book[i]->UpdatePurchase(quantity);
+							cout << "Purchase successfull" << endl;
+
+							if (book[i]->GetStock() == 0)
 							{
-								book[i]->UpdatePurchase(quantity);
-								cout << "Total purchase amount " << book[i]->GetPrice()*quantity << endl;
-
-								if (book[i]->GetStock() == 0)
-								{
-									book[i] = book[bookCount - 1];
-									//delete book[bookCount - 1];
-									book[bookCount - 1] = NULL;
-									bookCount--;
-								}
+								book[i] = book[bookCount - 1];
+								//delete book[bookCount - 1];
+								book[bookCount - 1] = NULL;
+								bookCount--;
 							}
-							else
-								break;
-
-							
 						}
 						else
-						{
-							cout << "Not that much stock is available" << endl;
 							break;
-						}
+
+
+					}
+					else
+					{
+						cout << "Not that much stock is available" << endl;
+						break;
+					}
 				}
 			}
 			if (flag == 0)
@@ -194,9 +195,9 @@ public:
 	{
 		for (int i = 0; i < bookCount; i++)
 		{
-			
-				delete book[i];
-				book[i] = NULL;
+
+			delete book[i];
+			book[i] = NULL;
 		}
 		delete[] name;
 
@@ -214,7 +215,7 @@ int main()
 	int choice;
 	cout << "Enter the store name" << endl;
 	cin >> name;
-	
+
 	BookStore store(name);
 	do
 	{
