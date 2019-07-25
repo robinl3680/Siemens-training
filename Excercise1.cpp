@@ -66,6 +66,7 @@ public:
 int main()
 {
 	int choice;
+	int userPurchaseChoice;
 	char name[50];
 	int flag,limit=0;
 	flag = 0;
@@ -101,46 +102,40 @@ int main()
 						break;
 					}
 				}
-			}
-			if (flag != 1)
-			{
 
-				if (limit <= 2)
-				{
-					cout << "New book please provide stock and price " << endl;
-					cin >> newStock >> price;
-					btr[bookCount++] = new Book(name, newStock, price);
-					limit++;
-				}
 				else
-					cout << "limit was reached" << endl;
+				{
+
+					if (bookCount <= 2)
+					{
+						cout << "New book please provide stock and price " << endl;
+						cin >> newStock >> price;
+						btr[bookCount++] = new Book(name, newStock, price);
+						break;
+					}
+					else
+					{
+						cout << "limit was reached" << endl;
+						break;
+					}
+				}
 			}
 				
 			
 			break;
 		case 2:
-			flag = 0;
-			for (int i = 0; i < 3; i++)
+			if (bookCount == 0)
 			{
-				if (btr[i] != NULL)
-				{
-					flag = 1;
-				}
-			}
-			if (flag == 0)
-			{
-				cout << "No books added" << endl;
+				cout << "No book added" << endl;
 				break;
 			}
-			for (int i = 0; i < 3; i++)
-		{
-			if (btr[i] != NULL)
+			for (int i = 0; i < bookCount; i++)
 			{
-				btr[i]->DisplayBookDetails();
+			
+					btr[i]->DisplayBookDetails();
+			
+			
 			}
-			else
-				continue;
-		}
 				break;
 		case 3: cout << "Enter book name " << endl;
 			cin >> name;
@@ -151,7 +146,7 @@ int main()
 			}
 			else
 			{
-				for (int i = 0; i < 3; i++)
+				for (int i = 0; i < bookCount; i++)
 				{
 					if (btr[i] != NULL)
 					{
@@ -162,20 +157,30 @@ int main()
 							cin >> quantity;
 							if (quantity <= btr[i]->getStock())
 							{
-								cout << "You can purchase now" << endl;
-								btr[i]->updatePurchase(quantity);
-
-								cout << "Total purchase amount " << btr[i]->getPrice()*quantity << endl;
-
-								if (btr[i]->getStock() == 0)
+								cout << "You can purchase now do you want ? 1/0" << endl;
+								cin >> userPurchaseChoice;
+								if (userPurchaseChoice == 1)
 								{
-									delete btr[i];
-									btr[i] = NULL;
-									limit--;
+									btr[i]->updatePurchase(quantity);
+
+									cout << "Total purchase amount " << btr[i]->getPrice()*quantity << endl;
+
+									if (btr[i]->getStock() == 0)
+									{
+										btr[i] = btr[bookCount - 1];
+										//delete book[bookCount - 1];
+										btr[bookCount - 1] = NULL;
+										bookCount--;
+									}
 								}
+								else
+									break;
 							}
 							else
+							{
 								cout << "Not that much stock is available" << endl;
+								break;
+							}
 
 						}
 						
