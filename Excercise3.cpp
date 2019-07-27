@@ -47,15 +47,16 @@ public:
 	{
 		return string1[index-1];
 	}
-	string operator()(int start, int end)
+	char* operator()(int start, int end)
 	{
-		
-		string s = "";
+		int k = 0;
+		char* name = new char[end - start + 1];
 		for (int i = start-1; i < end; i++)
 		{
-			s += string1[i];
+			name[k++] = string1[i];
 		}
-		return s;
+		name[k] = '\0';
+		return name;
 	}
 	void display()
 	{
