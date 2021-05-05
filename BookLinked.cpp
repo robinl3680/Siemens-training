@@ -25,14 +25,14 @@ struct techBook* searchTech(struct techBook* book, string name)
 	{
 		return NULL;
 	}
-	struct techBook* temp = book;
-	while (temp != NULL)
+	struct techBook* tempBook = book;
+	while (tempBook != NULL)
 	{
-		if (temp->name == name)
+		if (tempBook->name == name)
 		{
-			return temp;
+			return tempBook;
 		}
-		temp = temp->techNext;
+		tempBook = tempBook->techNext;
 	}
 	return NULL;
 }
