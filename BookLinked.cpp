@@ -25,6 +25,7 @@ struct techBook* searchTech(struct techBook* book, string name)
 	{
 		return NULL;
 	}
+	int a = 0;
 	struct techBook* tempBook = book;
 	while (tempBook != NULL)
 	{
